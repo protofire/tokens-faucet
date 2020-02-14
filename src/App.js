@@ -23,11 +23,7 @@ function App() {
 
   useEffect(() => {
     if (account && library) {
-      const signer = new ethers.providers.Web3Provider(
-        window.ethereum
-      ).getSigner();
-
-      contract = new ethers.Contract(address, abi, signer);
+      contract = new ethers.Contract(address, abi, library.getSigner());
     }
   }, [account, library]);
 
