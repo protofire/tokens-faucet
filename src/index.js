@@ -4,9 +4,10 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import Web3Provider from "web3-react";
+import { supportedNetworks } from "./constants";
 import { Connectors } from "web3-react";
 const { InjectedConnector } = Connectors;
-const MetaMask = new InjectedConnector({ supportedNetworks: [4, 42] });
+const MetaMask = new InjectedConnector({ supportedNetworks });
 const connectors = { MetaMask };
 
 ReactDOM.render(
