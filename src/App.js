@@ -1,21 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { useWeb3Context } from "web3-react";
 import BN from "big.js";
 import { ethers } from "ethers";
+import { networks } from "./networks";
 
 function App() {
+  const context = useWeb3Context();
   const {
     connectorName,
     account,
     networkId,
     library,
-    setFirstValidConnector
-  } = useWeb3Context();
+    setFirstValidConnector,
+    error
+  } = context;
 
-  const address = "0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea";
-  const abi = ["function allocateTo(address to, uint amount)"];
   let contract = null;
+
+  const [token, setToken] = useState("DAI");
 
   useEffect(() => {
     setFirstValidConnector(["MetaMask"]);
@@ -23,13 +26,25 @@ function App() {
 
   useEffect(() => {
     if (account && library) {
+      const { address, abi } = networks[token][networkId];
       contract = new ethers.Contract(address, abi, library.getSigner());
     }
-  }, [account, library]);
+  }, [account, library, networkId, token]);
 
-  const getDAI = async () => {
+  if (
+    error &&
+    (error.code === "UNSUPPORTED_NETWORK" ||
+      error.code === "ALL_CONNECTORS_INVALID")
+  ) {
+    return <div className="App">Connect MetaMask to Rinkeby</div>;
+  }
+
+  const getToken = async () => {
     const amount = new BN(10).pow(18);
-    await contract.allocateTo(account, amount.toString());
+    const method = networks[token][networkId].abi[0].includes("mint")
+      ? contract.mint
+      : contract.allocateTo;
+    await method(account, amount.toString());
   };
 
   return (
@@ -37,7 +52,17 @@ function App() {
       <p>Active Connector: {connectorName}</p>
       <p>Account: {account || "None"}</p>
       <p>Network ID: {networkId}</p>
-      <button onClick={getDAI}>GET DAI</button>
+      <select
+        onChange={e => {
+          setToken(e.target.value);
+        }}
+        value={token}
+      >
+        <option value="DAI">DAI</option>
+        <option value="BAT">BAT</option>
+      </select>
+
+      <button onClick={getToken}> {`GET ${token.toUpperCase()}`} </button>
     </div>
   );
 }

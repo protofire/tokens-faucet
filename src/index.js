@@ -6,7 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import Web3Provider from "web3-react";
 import { Connectors } from "web3-react";
 const { InjectedConnector } = Connectors;
-const MetaMask = new InjectedConnector({ supportedNetworks: [1, 4] });
+const MetaMask = new InjectedConnector({ supportedNetworks: [4, 42] });
 const connectors = { MetaMask };
 
 ReactDOM.render(
