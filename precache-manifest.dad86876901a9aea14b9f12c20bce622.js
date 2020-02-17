@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "405e80dfc6915e03c0c7f2378747d88a",
+    "revision": "47fb74d31be12ad25a70119c99cff0fc",
     "url": "/tokens-faucet/index.html"
   },
   {
-    "revision": "f3e8c70318d85b57c2d7",
+    "revision": "db5593b8b1538c4b3739",
     "url": "/tokens-faucet/static/css/main.d1b05096.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/tokens-faucet/static/js/2.90cb62ef.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "f3e8c70318d85b57c2d7",
-    "url": "/tokens-faucet/static/js/main.294106e2.chunk.js"
+    "revision": "db5593b8b1538c4b3739",
+    "url": "/tokens-faucet/static/js/main.f769b91d.chunk.js"
   },
   {
     "revision": "f39cc3acc3a93586ec02",

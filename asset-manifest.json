@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/tokens-faucet/static/css/main.d1b05096.chunk.css",
-    "main.js": "/tokens-faucet/static/js/main.294106e2.chunk.js",
-    "main.js.map": "/tokens-faucet/static/js/main.294106e2.chunk.js.map",
+    "main.js": "/tokens-faucet/static/js/main.f769b91d.chunk.js",
+    "main.js.map": "/tokens-faucet/static/js/main.f769b91d.chunk.js.map",
     "runtime-main.js": "/tokens-faucet/static/js/runtime-main.fc9f1639.js",
     "runtime-main.js.map": "/tokens-faucet/static/js/runtime-main.fc9f1639.js.map",
     "static/js/2.90cb62ef.chunk.js": "/tokens-faucet/static/js/2.90cb62ef.chunk.js",
     "static/js/2.90cb62ef.chunk.js.map": "/tokens-faucet/static/js/2.90cb62ef.chunk.js.map",
     "index.html": "/tokens-faucet/index.html",
-    "precache-manifest.d3b2f8bde0e33f8ca6a751ea00219347.js": "/tokens-faucet/precache-manifest.d3b2f8bde0e33f8ca6a751ea00219347.js",
+    "precache-manifest.dad86876901a9aea14b9f12c20bce622.js": "/tokens-faucet/precache-manifest.dad86876901a9aea14b9f12c20bce622.js",
     "service-worker.js": "/tokens-faucet/service-worker.js",
     "static/css/main.d1b05096.chunk.css.map": "/tokens-faucet/static/css/main.d1b05096.chunk.css.map",
     "static/js/2.90cb62ef.chunk.js.LICENSE.txt": "/tokens-faucet/static/js/2.90cb62ef.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.fc9f1639.js",
     "static/js/2.90cb62ef.chunk.js",
     "static/css/main.d1b05096.chunk.css",
-    "static/js/main.294106e2.chunk.js"
+    "static/js/main.f769b91d.chunk.js"
   ]
 }
