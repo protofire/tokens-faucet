@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "47fb74d31be12ad25a70119c99cff0fc",
+    "revision": "b1499ab05c12fe932e726f9a04f8c553",
     "url": "/tokens-faucet/index.html"
   },
   {
