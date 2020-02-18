@@ -68,13 +68,6 @@ function App() {
         <p>Account: {account || "None"}</p>
         <p>Network: {networkName} </p>
         <div>
-          <input
-            value={amount}
-            onChange={e => {
-              setAmount(e.target.value);
-            }}
-            type="number"
-          ></input>
           <select
             onChange={e => {
               setToken(e.target.value);
