@@ -3,7 +3,7 @@ import "./App.css";
 import { useWeb3Context } from "web3-react";
 import BN from "big.js";
 import { ethers } from "ethers";
-import { tokens, networks } from "./constants";
+import { tokens, networks, abis } from "./constants";
 
 function App() {
   const context = useWeb3Context();
@@ -19,6 +19,7 @@ function App() {
   const [amount, setAmount] = useState(0);
   const [mining, setMining] = useState(false);
   const [contract, setContract] = useState(null);
+  const [customAddress, setCustomAddress] = useState("");
 
   useEffect(() => {
     setFirstValidConnector(["MetaMask"]);
@@ -62,26 +63,110 @@ function App() {
     setMining(false);
   };
 
+  async function supportMethod(contractMethod, params) {
+    try {
+      console.log(contractMethod);
+      console.log(params);
+      await contractMethod(...params);
+
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  }
+
+  const getCustomToken = async () => {
+    const { mint1, mint2, allocateTo1 } = abis;
+    console.log("CUSTOM", customAddress);
+    const qtyWei = new BN(10)
+      .pow(18)
+      .mul(100)
+      .toString();
+
+    const contractSupported = [
+      { method: mint1, params: [account, qtyWei], name: "mint" },
+      { method: mint2, params: [qtyWei], name: "mint" },
+      { method: allocateTo1, params: [account, qtyWei], name: "allocateTo" }
+    ]
+      .map(o => {
+        return {
+          original: o.method,
+          view: [`${o.method[0]} view`],
+          params: o.params,
+          name: o.name
+        };
+      })
+      .map(o => {
+        console.log(o.view);
+        console.log(o.original);
+        const contractView = new ethers.Contract(
+          customAddress,
+          o.view,
+          library.getSigner()
+        );
+        const contractTx = new ethers.Contract(
+          customAddress,
+          o.original,
+          library.getSigner()
+        );
+        return {
+          methodView: contractView[o.name],
+          methodTx: contractTx[o.name],
+          params: o.params
+        };
+      })
+      .map(async c => {
+        const supported = await supportMethod(c.methodView, c.params);
+        return { methodTx: c.methodTx, supported };
+      })
+      .find(o => o.supported);
+
+    if (contractSupported) {
+      const tx = await contractSupported.methodTx(...contractSupported.params);
+      setMining(true);
+      await tx.wait();
+      setMining(false);
+    } else {
+      console.error("Unsupported token");
+    }
+  };
+
   return (
     <>
       <div className="App">
         <p>Account: {account || "None"}</p>
         <p>Network: {networkName} </p>
-        <div>
-          <select
-            onChange={e => {
-              setToken(e.target.value);
-            }}
-            value={token}
-          >
-            <option value="DAI">DAI</option>
-            <option value="BAT">BAT</option>
-          </select>
-        </div>
+        <input
+          type="text"
+          placeholder="Use custom address"
+          onChange={e => setCustomAddress(e.target.value)}
+          disabled={mining}
+          value={customAddress}
+        ></input>
+        {!customAddress ? (
+          <div>
+            <div>
+              <select
+                onChange={e => {
+                  setToken(e.target.value);
+                }}
+                value={token}
+              >
+                <option value="DAI">DAI</option>
+                <option value="BAT">BAT</option>
+              </select>
+            </div>
 
-        <button onClick={getToken} disabled={!amount || mining}>
-          {`GET ${amount} ${token.toUpperCase()}`}{" "}
-        </button>
+            <button onClick={getToken} disabled={!amount || mining}>
+              {`GET ${amount} ${token.toUpperCase()}`}{" "}
+            </button>
+          </div>
+        ) : (
+          <button onClick={getCustomToken} disabled={mining}>
+            Get 100 custom token
+          </button>
+        )}
         <div>
           <a
             target="_blank"
