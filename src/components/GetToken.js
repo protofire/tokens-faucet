@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useWeb3Context } from "web3-react";
 import BN from "big.js";
 import { ethers } from "ethers";
@@ -27,10 +27,9 @@ function GetToken() {
   }, [networkId, token]);
 
   const getToken = async () => {
-    const qtyWei = new BN(10).pow(18).mul(amount);
-    const method = tokens[token][networkId].abi[0].includes("mint")
-      ? contract.mint
-      : contract.allocateTo;
+    const tokenConfig = tokens[token][networkId]
+    const qtyWei = new BN(10).pow(tokenConfig.decimals || 18).mul(amount);
+    const method = tokenConfig.abi[0].includes("mint") ? contract.mint : contract.allocateTo;
     const tx = await method(account, qtyWei.toString());
     setMining(true);
     await tx.wait();
@@ -38,6 +37,15 @@ function GetToken() {
   };
 
   const networkName = networks[networkId].name;
+
+  const options = useMemo(() => {
+    return Object.entries(tokens)
+      .filter(([, token]) => token[networkId])
+      .map(([symbol]) => ({
+        value: symbol,
+        label: symbol
+      }));
+  }, [networkId]);
 
   return (
     <div>
@@ -48,8 +56,11 @@ function GetToken() {
           }}
           value={token}
         >
-          <option value="DAI">DAI</option>
-          <option value="BAT">BAT</option>
+          {options.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -60,9 +71,8 @@ function GetToken() {
       <div>
         <a
           target="_blank"
-          href={`https://${networkName.toLowerCase()}.etherscan.io/address/${
-            tokens[token][networkId].address
-          }`}
+          rel="noopener noreferrer"
+          href={`https://${networkName.toLowerCase()}.etherscan.io/address/${tokens[token][networkId].address}`}
         >
           {tokens[token][networkId].address}
         </a>

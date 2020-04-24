@@ -27,7 +27,15 @@ export const tokens = {
       abi: allocateTo,
       defaultAmount: 100
     }
-  }
+  },
+  USDC: {
+    "4": {
+      address: "0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b",
+      abi: allocateTo,
+      decimals: 6,
+      defaultAmount: 100
+    },
+  },
 };
 
 export const networks = {
